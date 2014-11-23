@@ -1,28 +1,28 @@
 
-#include "GameFramework/Actor.h"
-#include "PickUp.generated.h"
+// Fill out your copyright notice in the Description page of Project Settings.
 
-/**
- * 
- */
-UCLASS()
-class SIMPLEVEHICLE_API APickUp : public AActor
+#include "SimpleVehicle.h"
+#include "PickUp.h"
+
+
+APickUp::APickUp(const class FPostConstructInitializeProperties& PCIP)
+	: Super(PCIP)
 {
-	GENERATED_UCLASS_BODY()
+	bIsActivate = true;
 
-	UPROPERTY(EditAnyWhere, BlueprintReadWrite, Category = PickUp)
-	bool bIsActivate;
+	BaseCollision = PCIP.CreateDefaultSubobject<USphereComponent>(this, TEXT("BaseCollsion"));
 
-	UPROPERTY(EditAnyWhere, BlueprintReadWrite, Category = PickUp)
-	INT16 iCountFlags;
+	RootComponent = BaseCollision;
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = PickUp)
-	TSubobjectPtr<USphereComponent> BaseCollision;
+	PickupMesh = PCIP.CreateDefaultSubobject<UStaticMeshComponent>(this, TEXT("PickUpMesh"));
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = PickUp)
-	TSubobjectPtr<UStaticMeshComponent> PickupMesh;
+	PickupMesh->SetSimulatePhysics(true);
+	PickupMesh->AttachTo(RootComponent);
+}
 
-	UFUNCTION(BlueprintNativeEvent)
-	void PickedUp();
-	
-};
+void APickUp::PickedUp_Implementation()
+{
+	if (iCountFlags - 1 == iCountFlags)++iCountFlags;
+}
+
+
